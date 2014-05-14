@@ -4,6 +4,8 @@
  * MIT Licensed
  */
 
+var debug = require('debug')('samsaara:navigatorInfo');
+
 function navigatorInfo(options){
 
   var config,
@@ -24,7 +26,7 @@ function navigatorInfo(options){
 
     connection.updateDataAttribute("navInfo", {});
 
-    console.log("Initializing NavInfo...");
+    debug("Initializing NavInfo...");
 
     attributes.force("navInfo");
 
