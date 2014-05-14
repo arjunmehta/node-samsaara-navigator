@@ -32,5 +32,4 @@ var navInfo = (function(module){
 
 }(this.navInfo = this.navInfo || {}));
 
-
 samsaara.use(navInfo);

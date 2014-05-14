@@ -54,6 +54,8 @@ function navigatorInfo(options){
 
       name: "navigatorInfo",
 
+      clientScript: __dirname + '/client/samsaara-navigator.js', 
+
       connectionInitialization: {
         navigatorInfo: connectionInitialzation
       }      
