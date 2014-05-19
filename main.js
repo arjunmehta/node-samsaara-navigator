@@ -30,7 +30,7 @@ function navigatorInfo(options){
 
     attributes.force("navInfo");
 
-    communication.sendToClient(connection.id, {internal: "getNavInfo"}, function getNavInfo(navInfo){
+    connection.execute({internal: "getNavInfo"}, function getNavInfo(navInfo){
       connection.updateDataAttribute("navInfo", navInfo);
       attributes.initialized(null, "navInfo");
     });
@@ -48,7 +48,7 @@ function navigatorInfo(options){
     config = samsaaraCore.config;
     connectionController = samsaaraCore.connectionController;
     communication = samsaaraCore.communication;
-    ipc = samsaaraCore.ipcRedis;
+    ipc = samsaaraCore.ipc;
 
     samsaaraCore.addClientFileRoute("samsaara-navigator.js", __dirname + '/client/samsaara-navigator.js');
 
