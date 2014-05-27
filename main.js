@@ -30,7 +30,7 @@ function navigatorInfo(options){
 
     attributes.force("navInfo");
 
-    connection.execute({internal: "getNavInfo"}, function getNavInfo(navInfo){
+    connection.executeRaw({ns:"internal", func:"getNavInfo"}, function getNavInfo(navInfo){
       connection.updateDataAttribute("navInfo", navInfo);
       attributes.initialized(null, "navInfo");
     });
