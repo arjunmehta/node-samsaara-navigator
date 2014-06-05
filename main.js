@@ -6,67 +6,57 @@
 
 var debug = require('debug')('samsaara:navigatorInfo');
 
-function navigatorInfo(options){
 
-  var config,
-      connectionController,
-      communication,
-      ipc;
+var navigatorInfo = {
 
-  /**
-   * Connection Initialization Methods
-   * Called for every new connection
-   *
-   * @opts: {Object} contains the connection's options
-   * @connection: {SamsaaraConnection} the connection that is initializing
-   * @attributes: {Attributes} The attributes of the SamsaaraConnection and its methods
-   */
+  name: "navigatorInfo",
 
-  function connectionInitialzation(opts, connection, attributes){
+  clientScript: __dirname + '/client/samsaara-navigator.js', 
 
-    connection.updateDataAttribute("navInfo", {});
-
-    debug("Initializing NavInfo...");
-
-    attributes.force("navInfo");
-
-    connection.executeRaw({ns:"internal", func:"getNavInfo"}, function getNavInfo(navInfo){
-      connection.updateDataAttribute("navInfo", navInfo);
-      attributes.initialized(null, "navInfo");
-    });
+  connectionInitialization: {
+    navigatorInfo: connectionInitialzation
   }
+};
 
-  /**
-   * Module Return Function.
-   * Within this function you should set up and return your samsaara middleWare exported
-   * object. Your eported object can contain:
-   * name, foundation, remoteMethods, connectionInitialization, connectionClose
-   */
 
-  return function navigatorInfo(samsaaraCore){
+var connectionController,
+    communication;
 
-    config = samsaaraCore.config;
-    connectionController = samsaaraCore.connectionController;
-    communication = samsaaraCore.communication;
-    ipc = samsaaraCore.ipc;
+var options = options || {};
 
-    samsaaraCore.addClientFileRoute("samsaara-navigator.js", __dirname + '/client/samsaara-navigator.js');
 
-    var exported = {
+// the root interface loaded by require. Options are pass in options here.
 
-      name: "navigatorInfo",
-
-      clientScript: __dirname + '/client/samsaara-navigator.js', 
-
-      connectionInitialization: {
-        navigatorInfo: connectionInitialzation
-      }      
-    };
-
-    return exported;
-
-  };
-
+function main(opts){
+  return initialize;
 }
 
-module.exports = exports = navigatorInfo;
+
+// samsaara will call this method when it's ready to load it into its middleware stack
+// return your main 
+
+function initialize(samsaaraCore){
+  connectionController = samsaaraCore.connectionController;
+  communication = samsaaraCore.communication;
+  return navigatorInfo;
+}
+
+
+// Connection Initialization Methods
+
+function connectionInitialzation(opts, connection, attributes){
+
+  connection.updateDataAttribute("navInfo", {});
+  
+  debug("Initializing NavInfo...");
+  
+  attributes.force("navInfo");
+
+  connection.executeRaw({ns:"internal", func:"getNavInfo"}, function getNavInfo(navInfo){
+    connection.updateDataAttribute("navInfo", navInfo);
+    attributes.initialized(null, "navInfo");
+  });
+}
+
+
+module.exports = exports = main;
